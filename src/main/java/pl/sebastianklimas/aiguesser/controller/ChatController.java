@@ -2,9 +2,11 @@ package pl.sebastianklimas.aiguesser.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.sebastianklimas.aiguesser.model.Game;
+import pl.sebastianklimas.aiguesser.model.GameRequest;
 import pl.sebastianklimas.aiguesser.model.Response;
 import pl.sebastianklimas.aiguesser.service.ChatService;
 
@@ -17,8 +19,8 @@ public class ChatController {
     }
 
     @GetMapping("/ask")
-    public ResponseEntity<Response> chat(@RequestParam String message) {
-        return ResponseEntity.ok(chatService.ask(message));
+    public ResponseEntity<Response> chat(@RequestBody GameRequest gr) {
+        return ResponseEntity.ok(chatService.ask(gr.message(), gr.game()));
     }
 
     @GetMapping("/new-game")

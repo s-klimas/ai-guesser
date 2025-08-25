@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.sebastianklimas.aiguesser.exceptions.GameAlreadyWonException;
 import pl.sebastianklimas.aiguesser.exceptions.GameLostException;
 import pl.sebastianklimas.aiguesser.exceptions.IllegalActionException;
-import pl.sebastianklimas.aiguesser.exceptions.NoGameStartedException;
+import pl.sebastianklimas.aiguesser.exceptions.NoGameException;
 import pl.sebastianklimas.aiguesser.model.Game;
 import pl.sebastianklimas.aiguesser.model.ChatResponse;
 import pl.sebastianklimas.aiguesser.model.Response;
@@ -13,25 +13,30 @@ import pl.sebastianklimas.aiguesser.model.Response;
 @Service
 public class ChatService {
     private final ChatClient chatClient;
-    private Game game;
 
     public ChatService(ChatClient.Builder builder) {
         this.chatClient = builder.build();
     }
 
-    public Response ask(String question) {
-        if (game == null || game.getWord().isEmpty() || game.getWord().isBlank()) throw new NoGameStartedException("Tried to guess a word before the game started");
-        if (game.isGuessed()) throw new GameAlreadyWonException("Game already won, start new game");
-        if (game.getPrompts() > 20) throw new GameLostException("Game lost, try again");
+    public Response ask(String question, Game game) {
+        validate(question, game);
 
-        ChatResponse response = getResponse(question);
+        ChatResponse response = getResponse(question, game);
 
         game.incrementPrompts();
 
         return new Response(response.answer(), response.won(), game.getPrompts());
     }
 
-    private ChatResponse getResponse(String question) {
+    private void validate(String question, Game game) {
+        if (game == null || game.getWord() == null || game.getWord().isBlank()) throw new NoGameException("Tried to guess a word before the game started");
+        if (game.getWord().split(" ").length > 1) throw new IllegalActionException("There should not be any space in the word");
+        if (game.isGuessed()) throw new GameAlreadyWonException("Game already won, start new game");
+        if (game.getPrompts() > 20) throw new GameLostException("Game lost, try again");
+        if (question == null || question.isBlank()) throw new IllegalArgumentException("No question given");
+    }
+
+    private ChatResponse getResponse(String question, Game game) {
         return chatClient.prompt()
                 .user(u -> {
                     u.text("""
@@ -60,14 +65,6 @@ public class ChatService {
                 .user("I want to play 20 questions. Select one noun that I will have to guess. Respond with only one word you chose.")
                 .call()
                 .content();
-        game = new Game(word);
-        return game;
-    }
-
-    // For testing purposes
-    public void setGame(Game game) {
-        if (game == null) throw new IllegalActionException("You cannot use it");
-        if (game.getWord().split(" ").length > 1) throw new IllegalActionException("You cannot use it");
-        this.game = game;
+        return new Game(word);
     }
 }
