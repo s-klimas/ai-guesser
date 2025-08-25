@@ -2,6 +2,9 @@ package pl.sebastianklimas.aiguesser.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
+import pl.sebastianklimas.aiguesser.exceptions.GameAlreadyWonException;
+import pl.sebastianklimas.aiguesser.exceptions.GameLostException;
+import pl.sebastianklimas.aiguesser.exceptions.IllegalActionException;
 import pl.sebastianklimas.aiguesser.exceptions.NoGameStartedException;
 import pl.sebastianklimas.aiguesser.model.Game;
 import pl.sebastianklimas.aiguesser.model.ChatResponse;
@@ -16,7 +19,11 @@ public class ChatService {
         this.chatClient = builder.build();
     }
 
-    public Response guess(String question) {
+    public Response ask(String question) {
+        if (game == null || game.getWord().isEmpty() || game.getWord().isBlank()) throw new NoGameStartedException("Tried to guess a word before the game started");
+        if (game.isGuessed()) throw new GameAlreadyWonException("Game already won, start new game");
+        if (game.getPrompts() > 20) throw new GameLostException("Game lost, try again");
+
         ChatResponse response = getResponse(question);
 
         game.incrementPrompts();
@@ -25,8 +32,6 @@ public class ChatService {
     }
 
     private ChatResponse getResponse(String question) {
-        if (game == null || game.getWord().isEmpty() || game.getWord().isBlank()) throw new NoGameStartedException("Tried to guess a word before the game started");
-
         return chatClient.prompt()
                 .user(u -> {
                     u.text("""
@@ -38,9 +43,8 @@ public class ChatService {
                 .system(s -> {
                     s.text("""
                             Take on the role of a player 20 questions, but here will be 20 prompts.
-                            If asked about anything that isn't related to playing this game answer with 'I can only play 20 questions, so are we playing or not?'
-                            If the number of prompts exceeds 20, do not allow further guessing and respond only with 'YOU HAVE LOST, START THE GAME AGAIN.'
-                            If the player ask a question that you cannot answer with YES or NO, respond with 'Cannot answer that question, ask YES/NO questions.'
+                            You can only talk in the context of the game of 20 questions, and for every question a player asks that does not bring them closer to winning, respond with 'I can only play 20 questions.'
+                            If the player ask a question related to game that you cannot answer with YES or NO, respond with 'Cannot answer that question, ask YES/NO questions.'
                             Word to guess: {word}.
                             Current prompts count: {count}
                             """);
@@ -58,5 +62,12 @@ public class ChatService {
                 .content();
         game = new Game(word);
         return game;
+    }
+
+    // For testing purposes
+    public void setGame(Game game) {
+        if (game == null) throw new IllegalActionException("You cannot use it");
+        if (game.getWord().split(" ").length > 1) throw new IllegalActionException("You cannot use it");
+        this.game = game;
     }
 }
