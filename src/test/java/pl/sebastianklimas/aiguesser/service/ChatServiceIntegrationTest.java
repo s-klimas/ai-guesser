@@ -39,4 +39,11 @@ class ChatServiceIntegrationTest {
 
         assertTrue(response.won(), "AI should recognize players victory.");
     }
+
+    @Test
+    void testing_startGame_shouldReceiveOneWordFromAI() {
+        Game game = chatService.startGame();
+
+        assertEquals(1 , game.getWord().split(" ").length, "Chat should respond with only one word.");
+    }
 }
