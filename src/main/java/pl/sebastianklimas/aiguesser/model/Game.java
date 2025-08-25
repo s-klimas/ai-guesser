@@ -2,12 +2,12 @@ package pl.sebastianklimas.aiguesser.model;
 
 public class Game {
     String word;
-    int questions;
+    int prompts;
     boolean guessed;
 
     public Game(String word) {
         this.word = word;
-        this.questions = 0;
+        this.prompts = 0;
         this.guessed = false;
     }
 
@@ -19,12 +19,12 @@ public class Game {
         this.word = word;
     }
 
-    public int getQuestions() {
-        return questions;
+    public int getPrompts() {
+        return prompts;
     }
 
-    public void setQuestions(int questions) {
-        this.questions = questions;
+    public void setPrompts(int prompts) {
+        this.prompts = prompts;
     }
 
     public boolean isGuessed() {
@@ -35,7 +35,7 @@ public class Game {
         this.guessed = guessed;
     }
 
-    public void incrementQuestions() {
-        this.questions++;
+    public void incrementPrompts() {
+        this.prompts++;
     }
 }

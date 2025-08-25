@@ -21,7 +21,7 @@ public class ChatController {
         return ResponseEntity.ok(chatService.guess(message));
     }
 
-    @GetMapping("/game")
+    @GetMapping("/new-game")
     public ResponseEntity<Game> startGame() {
         return ResponseEntity.ok(chatService.startGame());
     }
