@@ -2,6 +2,7 @@ package pl.sebastianklimas.aiguesser.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.sebastianklimas.aiguesser.model.Game;
@@ -17,7 +18,7 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    @GetMapping("/ask")
+    @PostMapping("/ask")
     public ResponseEntity<Response> chat(@RequestBody GameRequest gr) {
         return ResponseEntity.ok(chatService.ask(gr.message(), gr.game()));
     }
