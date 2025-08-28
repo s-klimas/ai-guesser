@@ -1,10 +1,7 @@
 package pl.sebastianklimas.aiguesser.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.sebastianklimas.aiguesser.model.Game;
 import pl.sebastianklimas.aiguesser.model.GameRequest;
 import pl.sebastianklimas.aiguesser.model.Response;
@@ -18,11 +15,13 @@ public class ChatController {
         this.chatService = chatService;
     }
 
+//    @CrossOrigin(origins = "*")
     @PostMapping("/ask")
     public ResponseEntity<Response> chat(@RequestBody GameRequest gr) {
         return ResponseEntity.ok(chatService.ask(gr.message(), gr.game()));
     }
 
+//    @CrossOrigin(origins = "*")
     @GetMapping("/new-game")
     public ResponseEntity<Game> startGame() {
         return ResponseEntity.ok(chatService.startGame());
