@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="scripts.js" ></script>
+    <title>Gra 20 pytań</title>
+</head>
+<body>
+<div class="app" role="application" aria-label="Messenger 20 pytań">
+    <header class="header">
+        <div class="avatar">20</div>
+        <div class="title">
+            <div class="name">20 Pytań — Bot</div>
+            <div class="sub">Zadawaj pytania, spróbuj odgadnąć słowo</div>
+        </div>
+
+        <div class="controls">
+            <div class="status small"><span class="dot" aria-hidden></span><span id="promptsLeft" class="small">Ładowanie...</span>
+            </div>
+            <button id="newGameBtn" class="button">Nowa gra</button>
+        </div>
+    </header>
+
+    <main class="messages" id="messages" aria-live="polite"></main>
+
+    <div class="input-area">
+        <div class="input-wrapper">
+            <input id="textInput" type="text" placeholder="Zadaj pytanie lub spróbuj zgadnąć (np. 'Czy to zwierzę?')"
+                   aria-label="Twoje pytanie">
+            <button id="sendBtn" class="send">Wyślij</button>
+        </div>
+        <div style="width:160px;text-align:right">
+            <div class="small">Wykorzystane pytania: <strong id="remaining">--</strong></div>
+            <div id="gameHint" class="hint"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
