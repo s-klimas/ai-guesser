@@ -1,7 +1,11 @@
 package pl.sebastianklimas.aiguesser.model;
 
-public record GameRequest(
-        String message,
-        Game game
-) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@AllArgsConstructor
+@Data
+public class GameRequest {
+    private String message;
+    private Game game;
 }

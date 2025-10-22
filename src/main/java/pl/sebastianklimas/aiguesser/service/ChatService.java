@@ -25,7 +25,7 @@ public class ChatService {
 
         game.incrementPrompts();
 
-        return new Response(response.answer(), response.won(), game.getPrompts());
+        return new Response(response.getAnswer(), response.isWon(), game.getPrompts());
     }
 
     private void validate(String question, Game game) {

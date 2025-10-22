@@ -1,4 +1,11 @@
 package pl.sebastianklimas.aiguesser.model;
 
-public record ChatResponse(String answer, boolean won) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@AllArgsConstructor
+@Data
+public class ChatResponse {
+    private String answer;
+    private boolean won;
 }

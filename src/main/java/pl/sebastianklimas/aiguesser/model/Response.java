@@ -1,4 +1,12 @@
 package pl.sebastianklimas.aiguesser.model;
 
-public record Response(String message, boolean won, int promptsUsed) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@AllArgsConstructor
+@Data
+public class Response {
+    private String message;
+    private boolean won;
+    private int promptsUsed;
 }

@@ -18,7 +18,7 @@ public class ChatController {
 //    @CrossOrigin(origins = "*")
     @PostMapping("/ask")
     public ResponseEntity<Response> chat(@RequestBody GameRequest gr) {
-        return ResponseEntity.ok(chatService.ask(gr.message(), gr.game()));
+        return ResponseEntity.ok(chatService.ask(gr.getMessage(), gr.getGame()));
     }
 
 //    @CrossOrigin(origins = "*")
