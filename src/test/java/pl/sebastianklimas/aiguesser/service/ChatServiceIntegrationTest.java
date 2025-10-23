@@ -19,7 +19,7 @@ class ChatServiceIntegrationTest {
 
         Response response = chatService.ask("Is mouse an animal?", game);
 
-        assertEquals("I can only play 20 questions.", response.message(), "Chat should respond with the correct answer.");
+        assertEquals("I can only play 20 questions.", response.getMessage(), "Chat should respond with the correct answer.");
     }
 
     @Test
@@ -28,7 +28,7 @@ class ChatServiceIntegrationTest {
 
         Response response = chatService.ask("What category does this item belong to?", game);
 
-        assertEquals("Cannot answer that question, ask YES/NO questions.", response.message(), "Chat should respond with the correct answer.");
+        assertEquals("Cannot answer that question, ask YES/NO questions.", response.getMessage(), "Chat should respond with the correct answer.");
     }
 
     @Test
@@ -37,7 +37,7 @@ class ChatServiceIntegrationTest {
 
         Response response = chatService.ask("Is it umbrella?", game);
 
-        assertTrue(response.won(), "AI should recognize players victory.");
+        assertTrue(response.isWon(), "AI should recognize players victory.");
     }
 
     @Test
