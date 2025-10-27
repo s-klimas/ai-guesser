@@ -2,6 +2,7 @@ package pl.sebastianklimas.aiguesser.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.sebastianklimas.aiguesser.model.Game;
@@ -30,5 +31,10 @@ public class ChatController {
     @Operation(summary = "Returns a word from chat, that player has to guess")
     public ResponseEntity<Game> startGame() {
         return ResponseEntity.ok(chatService.startGame());
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Void> handleIllegalStateException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

@@ -6,8 +6,8 @@ import pl.sebastianklimas.aiguesser.exceptions.GameAlreadyWonException;
 import pl.sebastianklimas.aiguesser.exceptions.GameLostException;
 import pl.sebastianklimas.aiguesser.exceptions.IllegalActionException;
 import pl.sebastianklimas.aiguesser.exceptions.NoGameException;
-import pl.sebastianklimas.aiguesser.model.Game;
 import pl.sebastianklimas.aiguesser.model.ChatResponse;
+import pl.sebastianklimas.aiguesser.model.Game;
 import pl.sebastianklimas.aiguesser.model.Response;
 
 @Service
@@ -65,6 +65,7 @@ public class ChatService {
                 .user("I want to play 20 questions. Select one noun that I will have to guess. Respond with only one word you chose.")
                 .call()
                 .content();
+        if (word == null || word.isBlank()) throw new IllegalStateException("No word given");
         return new Game(word);
     }
 }
