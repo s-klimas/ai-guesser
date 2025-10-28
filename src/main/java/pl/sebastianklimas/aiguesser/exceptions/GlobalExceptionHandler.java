@@ -44,4 +44,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleJsonParseException(JsonParseException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong with parsing AI response, please try again");
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Void> handleIllegalStateException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }
